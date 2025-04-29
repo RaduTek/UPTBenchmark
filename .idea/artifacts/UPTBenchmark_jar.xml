@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="UPTBenchmark:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UPTBenchmark_jar</output-path>
+    <root id="archive" name="UPTBenchmark.jar">
+      <element id="module-output" name="UPTBenchmark" />
+    </root>
+  </artifact>
+</component>
