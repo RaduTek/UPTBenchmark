@@ -10,7 +10,7 @@ public class Timer implements ITimer {
         if (!running) {
             startTime = System.nanoTime();
             running = true;
-            totalElapsedTime = 0;
+            totalElapsedTime = 0;  // Reset only on fresh start
         }
     }
 
@@ -40,5 +40,19 @@ public class Timer implements ITimer {
             return elapsed;
         }
         return 0;
+    }
+
+    // Added this helper method to get elapsed time so far (without stopping)
+    public long getElapsedTime() {
+        if (running) {
+            return totalElapsedTime + (System.nanoTime() - startTime);
+        } else {
+            return totalElapsedTime;
+        }
+    }
+
+    //method to check if timer is running
+    public boolean isRunning() {
+        return running;
     }
 }

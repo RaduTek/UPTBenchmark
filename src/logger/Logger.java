@@ -35,6 +35,12 @@ public class Logger implements ILog {
         out.println();
     }
 
+    //@Override
+    public void writeTime(String msg, long time, TimeUnit unit) {
+        double convertedTime = TimeUnit.convert(time, unit);
+        out.println(msg + " " + convertedTime + " " + unit);
+    }
+
     @Override
     public void close() {
         out.flush();
