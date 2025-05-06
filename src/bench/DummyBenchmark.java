@@ -6,6 +6,15 @@ public class DummyBenchmark implements IBenchmark {
         return "DummyBenchmark";
     }
 
+    @Override
+    public void warmUp() {
+    }
+
+    @Override
+    public String getResult() {
+        return "";
+    }
+
     private int iterations;
 
     @Override

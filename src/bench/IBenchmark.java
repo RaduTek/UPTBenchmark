@@ -38,4 +38,16 @@ public interface IBenchmark {
      * @return the name of the benchmark
      */
     String getName();
+
+    /**
+     * Warms up the benchmark to prepare for accurate measurement.
+     */
+    void warmUp();
+
+    /**
+     * Returns the result of the benchmark.
+     *
+     * @return the result of the benchmark, typically a performance metric
+     */
+    String getResult();
 }

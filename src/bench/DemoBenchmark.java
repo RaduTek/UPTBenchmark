@@ -12,6 +12,16 @@ public class DemoBenchmark implements IBenchmark {
     }
 
     @Override
+    public void warmUp() {
+
+    }
+
+    @Override
+    public String getResult() {
+        return "";
+    }
+
+    @Override
     public void initialize(Object... params) {
         if (params.length > 0 && params[0] instanceof Integer) {
             int size = (Integer) params[0];
