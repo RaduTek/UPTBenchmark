@@ -12,11 +12,10 @@ import java.util.Random;
 import logger.ConsoleLogger;
 import logger.ILog;
 import timer.Timer;
+import timer.TimeConst;
 
 public class FileWriter {
 
-	private static final double NANO_TO_SECONDS = 1_000_000_000.0;
-	private static final double NANO_TO_MILLISECONDS = 1_000_000.0;
 	private static final int MIN_BUFFER_SIZE = 1024; // 1 KB
 	private static final int MAX_BUFFER_SIZE = 1024 * 1024 * 64; // 32 MB
 	private static final long MIN_FILE_SIZE = 1024 * 1024; // 1 MB
@@ -63,11 +62,11 @@ public class FileWriter {
 			double currentMegaBytes = (double) fileSize / (1024 * 1024);
 			totalMegaBytes += currentMegaBytes;
 
-			double currentRate = currentMegaBytes / (time / NANO_TO_SECONDS); // MB/sec
+			double currentRate = currentMegaBytes / (time / TimeConst.NANO_TO_SECONDS); // MB/sec
 			scores.add(currentRate); // MB/sec
 
 			logger.write("Pass", fileIndex + 1, "Buffer size:", currentBufferSize / 1024, "kB",
-					"Time:", nf.format(time / NANO_TO_MILLISECONDS), "ms",
+					"Time:", nf.format(time / TimeConst.NANO_TO_MILLISECONDS), "ms",
 					"Rate:", nf.format(currentRate), "MB/sec");
 
 			currentBufferSize *= 4;
@@ -76,7 +75,7 @@ public class FileWriter {
 
 		// calculate average score
 //		double totalRate = calcTotalRate(scores, fileIndex);
-		double totalRate = totalMegaBytes / (totalTime / NANO_TO_SECONDS);
+		double totalRate = totalMegaBytes / (totalTime / TimeConst.NANO_TO_SECONDS);
 
 		printStats(filePrefix, totalRate, totalMegaBytes, totalTime, -1);
 	}
@@ -110,12 +109,12 @@ public class FileWriter {
 			totalTime += time;
 			double currentMegaBytes = (double) currentFileSize / (1024 * 1024);
 			totalMegaBytes += currentMegaBytes;
-			double currentRate = currentMegaBytes / (time / NANO_TO_SECONDS); // MB/sec
-			scores.add((double) currentFileSize / (time / NANO_TO_SECONDS) / (1024 * 1024)); // MB/sec
+			double currentRate = currentMegaBytes / (time / TimeConst.NANO_TO_SECONDS); // MB/sec
+			scores.add((double) currentFileSize / (time / TimeConst.NANO_TO_SECONDS) / (1024 * 1024)); // MB/sec
 
 
 			logger.write("Pass", fileIndex + 1, "File size:", currentMegaBytes, "MB",
-					"Time:", time / NANO_TO_MILLISECONDS, "ms", "Rate:", nf.format(currentRate), "MB/sec");
+					"Time:", time / TimeConst.NANO_TO_MILLISECONDS, "ms", "Rate:", nf.format(currentRate), "MB/sec");
 
 			currentFileSize *= 4;
 			fileIndex++;
@@ -123,7 +122,7 @@ public class FileWriter {
 
 		// calculate average score
 //		double totalRate = calcTotalRate(scores, fileIndex);
-		double totalRate = totalMegaBytes / (totalTime / NANO_TO_SECONDS);
+		double totalRate = totalMegaBytes / (totalTime / TimeConst.NANO_TO_SECONDS);
 
 		printStats(filePrefix, totalRate, totalMegaBytes, totalTime, bufferSize);
 	}
@@ -173,7 +172,7 @@ public class FileWriter {
 	private void printStats(String filePrefix, double totalRate,
 							double totalMegaBytes, long totalTime, int bufferSize) {
 
-		double seconds = (double) totalTime / NANO_TO_SECONDS;
+		double seconds = (double) totalTime / TimeConst.NANO_TO_SECONDS;
 
 		var loggerMessage = "Done writing ";
 		loggerMessage += totalMegaBytes + " MB ";
