@@ -35,11 +35,13 @@ public class Testbench {
     private static void demo(String[] args) {
         Timer timer = new Timer();
         ConsoleLogger log = new ConsoleLogger();
+        DemoBenchmark bench = new DemoBenchmark();
+
+        int opsPerIter = bench.getOpsPerIter();
+        int workload = bench.getWorkload();
 
         System.out.println("Initializing benchmark...");
-        DemoBenchmark bench = new DemoBenchmark();
         bench.initialize(1_000_000);
-
         System.out.println("Starting timer...");
         timer.start();
 
@@ -49,7 +51,7 @@ public class Testbench {
 
             long elapsed = timer.pause();
             System.out.println("Paused timer after run " + i + ", elapsed: " + elapsed + " ns");
-            log.write("Run " + i + " paused at:", elapsed, "ns");
+            log.write("Run " + i + " paused at: " + elapsed + " ns");
 
             try {
                 Thread.sleep(100); // simulate wait
@@ -75,6 +77,9 @@ public class Testbench {
         log.close();
 
         System.out.println("Done.");
+        double seconds = total / 1e9;
+        double mops = opsPerIter * workload / (seconds * 1e6);
+        log.write("MOPS:" + mops);
     }
 
     public static void main(String[] args) {
@@ -86,6 +91,7 @@ public class Testbench {
 
         switch (benchmark) {
             case "demo":
+                demo(args);
                 break;
             case "hddwrite":
                 hddwrite(args);

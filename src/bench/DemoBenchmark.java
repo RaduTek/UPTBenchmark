@@ -5,6 +5,7 @@ import java.util.Random;
 public class DemoBenchmark implements IBenchmark {
     private int[] array;
     private boolean running;
+    private static final int OPS_PER_ITER = 6;
 
     //@Override
     public String getName() {
@@ -31,7 +32,6 @@ public class DemoBenchmark implements IBenchmark {
             for (int i = 0; i < size; i++) {
                 array[i] = rand.nextInt();
             }
-
             running = true;
         }
     }
@@ -59,6 +59,13 @@ public class DemoBenchmark implements IBenchmark {
         System.out.println("DemoBenchmark: run() finished"); 
     }
 
+    public int getOpsPerIter() {
+        return OPS_PER_ITER;
+    }
+
+    public int getWorkload() {
+        return array == null ? 0 : array.length;
+    }
 
     @Override
     public void run(Object... params) {
