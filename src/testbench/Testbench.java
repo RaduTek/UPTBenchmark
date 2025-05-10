@@ -93,6 +93,9 @@ public class Testbench {
             case "demo":
                 demo(args);
                 break;
+            case "cpufloat":
+                TestCPUFixedVsFloatingPoint.main(args);
+                break;
             case "hddwrite":
                 hddwrite(args);
                 break;
