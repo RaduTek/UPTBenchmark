@@ -38,4 +38,9 @@ public interface IBenchmark {
      * @return the name of the benchmark
      */
     String getName();
+
+    /**
+     * Warms up the benchmark to trigger JVM optimizations.
+     */
+    void warmup();
 }

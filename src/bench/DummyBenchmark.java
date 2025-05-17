@@ -39,4 +39,9 @@ public class DummyBenchmark implements IBenchmark {
     public void cancel() {
         // Cancel logic if necessary
     }
+
+    @Override
+    public void warmup() {
+        // No warmup needed for dummy benchmark
+    }
 }
