@@ -3,6 +3,7 @@ package testbench;
 import bench.DemoBenchmark;
 import bench.RecursivePrimeBenchmark;
 import bench.hdd.HDDWriteSpeed;
+import bench.ram.VirtualMemoryBenchmark;
 import logger.ConsoleLogger;
 import logger.TimeUnit;
 import timer.Timer;
@@ -81,10 +82,35 @@ public class Testbench {
         bench.clean();
     }
 
+    private static void virtualMemory(String[] args) {
+        long fileSize = 2L * 1024 * 1024 * 1024; // default 2 GB
+        int bufferSize = 4096; // default 4 KB
+
+        if (args.length >= 2) {
+            try {
+                fileSize = Long.parseLong(args[1]) * 1024 * 1024; // convert MB to bytes
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid file size, using default 2 GB.");
+            }
+            try {
+                bufferSize = Integer.parseInt(args[2]); // buffer size in bytes
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid buffer size, using default 4 KB.");
+            }
+        }
+
+        System.out.println("Running VirtualMemoryBenchmark with file size " + (fileSize / (1024 * 1024)) + " MB and buffer size " + (bufferSize / 1024) + " KB...");
+        var vmb = new VirtualMemoryBenchmark();
+
+        vmb.run(fileSize, bufferSize);
+
+        System.out.println(vmb.getResult());
+    }
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            System.out.println("Please specify a benchmark! hddwrite, hddrandom, demo, cpu, memory, recursive prime");
+            System.out.println("Please specify a benchmark!\n" +
+                    "Available benchmarks: cpufloat, hddwrite, hddrandom, recursiveprime, virtualmem, demo");
             return;
         }
         String benchmark = args[0].toLowerCase();
