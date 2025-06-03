@@ -115,6 +115,9 @@ public class Testbench {
         }
         String benchmark = args[0].toLowerCase();
 
+        SysInfoUtil.printSystemInfo();
+        System.out.println("===========================\n");
+
         switch (benchmark) {
             case "demo":
                 demo(args);
@@ -130,6 +133,9 @@ public class Testbench {
                 break;
             case "recursiveprime":
                 recursivePrime(args);
+                break;
+            case "virtualmem":
+                virtualMemory(args);
                 break;
         }
     }
