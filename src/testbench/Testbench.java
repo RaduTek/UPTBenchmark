@@ -8,31 +8,6 @@ import logger.TimeUnit;
 import timer.Timer;
 
 public class Testbench {
-    private static void hddwrite(String[] args) {
-        // Implementation for HDD write speed benchmark
-        if (args.length < 2) {
-            System.out.println("Please specify the path for the HDD write speed benchmark, and optionally the benchmark type (fs, fb)");
-            return;
-        }
-
-        System.out.println("Running HDD write speed benchmark...");
-
-        String targetPath = args[1];
-        HDDWriteSpeed hwd = new HDDWriteSpeed(targetPath);
-        hwd.warmUp();
-
-        if (args.length >= 3) {
-            // run only specified benchmark type
-            hwd.run(args[2], true);
-        } else {
-            // run both
-            hwd.run("fs", true); // fixed size, clean up after
-            hwd.run("fb", true); // fixed buffer, clean up after
-        }
-
-        hwd.clean();
-    }
-
     private static void demo(String[] args) {
         Timer timer = new Timer();
         ConsoleLogger log = new ConsoleLogger();
@@ -122,7 +97,10 @@ public class Testbench {
                 TestCPUFixedVsFloatingPoint.main(args);
                 break;
             case "hddwrite":
-                hddwrite(args);
+                HDDBench.hddwrite(args);
+                break;
+            case "hddrandom":
+                HDDBench.hddrandom(args);
                 break;
             case "recursiveprime":
                 recursivePrime(args);
