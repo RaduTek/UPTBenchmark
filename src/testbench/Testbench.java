@@ -1,6 +1,7 @@
 package testbench;
 
 import bench.DemoBenchmark;
+import bench.RecursivePrimeBenchmark;
 import bench.hdd.HDDWriteSpeed;
 import logger.ConsoleLogger;
 import logger.TimeUnit;
@@ -35,11 +36,13 @@ public class Testbench {
     private static void demo(String[] args) {
         Timer timer = new Timer();
         ConsoleLogger log = new ConsoleLogger();
+        DemoBenchmark bench = new DemoBenchmark();
+
+        int opsPerIter = bench.getOpsPerIter();
+        int workload = bench.getWorkload();
 
         System.out.println("Initializing benchmark...");
-        DemoBenchmark bench = new DemoBenchmark();
         bench.initialize(1_000_000);
-
         System.out.println("Starting timer...");
         timer.start();
 
@@ -49,7 +52,7 @@ public class Testbench {
 
             long elapsed = timer.pause();
             System.out.println("Paused timer after run " + i + ", elapsed: " + elapsed + " ns");
-            log.write("Run " + i + " paused at:", elapsed, "ns");
+            log.write("Run " + i + " paused at: " + elapsed + " ns");
 
             try {
                 Thread.sleep(100); // simulate wait
@@ -75,20 +78,54 @@ public class Testbench {
         log.close();
 
         System.out.println("Done.");
+        double seconds = total / 1e9;
+        double mops = opsPerIter * workload / (seconds * 1e6);
+        log.write("MOPS:" + mops);
     }
+
+    private static void recursivePrime(String[] args) {
+        int unrollFactor = 1;
+        if (args.length >= 2) {
+            try {
+                unrollFactor = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid unroll factor, using default (1).");
+                unrollFactor = 1;
+            }
+        }
+        RecursivePrimeBenchmark bench = new RecursivePrimeBenchmark();
+        bench.initialize(unrollFactor);
+
+        System.out.println("Warming up...");
+        bench.warmUp();
+
+        System.out.println("Running RecursivePrimeBenchmark with unroll factor " + unrollFactor + "...");
+        bench.run();
+
+        System.out.println(bench.getResult());
+        bench.clean();
+    }
+
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            System.out.println("Please specify a benchmark! hddwrite, hddrandom, demo, cpu, memory");
+            System.out.println("Please specify a benchmark! hddwrite, hddrandom, demo, cpu, memory, recursive prime");
             return;
         }
         String benchmark = args[0].toLowerCase();
 
         switch (benchmark) {
             case "demo":
+                demo(args);
+                break;
+            case "cpufloat":
+                TestCPUFixedVsFloatingPoint.main(args);
                 break;
             case "hddwrite":
                 hddwrite(args);
+                break;
+            case "recursiveprime":
+                recursivePrime(args);
                 break;
         }
     }
